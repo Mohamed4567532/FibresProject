@@ -1,0 +1,87 @@
+<!-- Hero Section -->
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-content">
+      <h1>Nos Services</h1>
+      <p>Des solutions complètes en fibre optique pour tous vos besoins</p>
+    </div>
+  </div>
+</section>
+
+<!-- Services Grid -->
+<section class="services-section section">
+  <div class="container">
+    <div class="services-grid">
+      <div class="service-card card" *ngFor="let service of services">
+        <div class="service-header">
+          <div class="service-icon">
+            <mat-icon>{{ service.icon }}</mat-icon>
+          </div>
+          <h3>{{ service.title }}</h3>
+        </div>
+        <p class="service-description">{{ service.description }}</p>
+        <ul class="service-features">
+          <li *ngFor="let feature of service.features">
+            <mat-icon>check_circle</mat-icon>
+            {{ feature }}
+          </li>
+        </ul>
+        <div class="service-footer">
+          <div class="service-price" *ngIf="service.price">
+            <span class="price">{{ service.price }}€</span>
+            <span class="duration">{{ service.duration }}</span>
+          </div>
+          <button mat-raised-button class="btn-primary" (click)="requestQuote(service)">
+            Demander un Devis
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Section -->
+<section class="process-section section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Notre Processus</h2>
+      <p>Comment nous travaillons pour vous offrir le meilleur service</p>
+    </div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Consultation</h3>
+        <p>Analyse de vos besoins et évaluation technique</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Devis</h3>
+        <p>Proposition détaillée avec planning et tarifs</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Installation</h3>
+        <p>Mise en œuvre par nos techniciens certifiés</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Support</h3>
+        <p>Maintenance et support technique continu</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Besoin d'un Service Personnalisé ?</h2>
+      <p>Contactez-nous pour discuter de votre projet</p>
+      <button mat-raised-button class="btn-primary btn-large" routerLink="/contact">
+        <mat-icon>phone</mat-icon>
+        Nous Contacter
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,46 @@
+<mat-toolbar class="header-toolbar">
+  <div class="container">
+    <div class="header-content">
+      <!-- Logo -->
+      <div class="logo">
+        <mat-icon class="logo-icon">fiber_optics</mat-icon>
+        <span class="logo-text">FibreOptique Pro</span>
+      </div>
+
+      <!-- Navigation Desktop -->
+      <nav class="nav-desktop">
+        <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+        <a routerLink="/about" routerLinkActive="active">À Propos</a>
+        <a routerLink="/services" routerLinkActive="active">Services</a>
+        <a routerLink="/products" routerLinkActive="active">Produits</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      </nav>
+
+      <!-- CTA Buttons -->
+      <div class="header-actions">
+        <button mat-icon-button class="cart-btn" routerLink="/products">
+          <mat-icon>shopping_cart</mat-icon>
+          <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+        </button>
+        <button mat-button class="btn-secondary" routerLink="/pricing">Tarifs</button>
+        <button mat-button class="btn-secondary" routerLink="/admin">Admin</button>
+        <button mat-raised-button class="btn-primary" routerLink="/contact">Devis Gratuit</button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button mat-icon-button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" [class.open]="mobileMenuOpen">
+    <a routerLink="/home" (click)="closeMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+    <a routerLink="/about" (click)="closeMobileMenu()" routerLinkActive="active">À Propos</a>
+    <a routerLink="/services" (click)="closeMobileMenu()" routerLinkActive="active">Services</a>
+    <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">Produits</a>
+    <a routerLink="/contact" (click)="closeMobileMenu()" routerLinkActive="active">Contact</a>
+    <a routerLink="/pricing" (click)="closeMobileMenu()" routerLinkActive="active">Tarifs</a>
+  </div>
+</mat-toolbar>
