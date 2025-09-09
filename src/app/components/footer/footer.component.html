@@ -1,0 +1,103 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Company Info -->
+      <div class="footer-section">
+        <div class="footer-logo">
+          <mat-icon class="logo-icon">fiber_optics</mat-icon>
+          <span class="logo-text">FibreOptique Pro</span>
+        </div>
+        <p class="footer-description">
+          Votre partenaire de confiance pour tous vos besoins en fibre optique. 
+          Installation, maintenance et conseil technique professionnel.
+        </p>
+        <div class="social-links">
+          <a href="#" mat-icon-button>
+            <mat-icon>facebook</mat-icon>
+          </a>
+          <a href="#" mat-icon-button>
+            <mat-icon>twitter</mat-icon>
+          </a>
+          <a href="#" mat-icon-button>
+            <mat-icon>linkedin</mat-icon>
+          </a>
+          <a href="#" mat-icon-button>
+            <mat-icon>youtube</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h3>Liens Rapides</h3>
+        <ul class="footer-links">
+          <li><a routerLink="/about">À Propos</a></li>
+          <li><a routerLink="/services">Services</a></li>
+          <li><a routerLink="/products">Produits</a></li>
+          <li><a routerLink="/portfolio">Portfolio</a></li>
+          <li><a routerLink="/pricing">Tarifs</a></li>
+        </ul>
+      </div>
+
+      <!-- Services -->
+      <div class="footer-section">
+        <h3>Nos Services</h3>
+        <ul class="footer-links">
+          <li><a routerLink="/services">Installation Fibre</a></li>
+          <li><a routerLink="/services">Maintenance Réseau</a></li>
+          <li><a routerLink="/services">Audit Technique</a></li>
+          <li><a routerLink="/services">Conseil Expert</a></li>
+          <li><a routerLink="/contact">Support 24/7</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <div class="contact-info">
+          <div class="contact-item">
+            <mat-icon>location_on</mat-icon>
+            <span>123 Rue de la Fibre<br>75001 Paris, France</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon>phone</mat-icon>
+            <span>+33 1 23 45 67 89</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon>email</mat-icon>
+            <span>contact@fibre-optique.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="newsletter-section">
+      <div class="newsletter-content">
+        <h3>Restez Informé</h3>
+        <p>Abonnez-vous à notre newsletter pour recevoir les dernières actualités</p>
+        <div class="newsletter-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Votre email</mat-label>
+            <input matInput type="email" [(ngModel)]="newsletterEmail" placeholder="votre@email.com">
+          </mat-form-field>
+          <button mat-raised-button class="btn-primary" (click)="subscribeNewsletter()">
+            S'abonner
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; 2024 FibreOptique Pro. Tous droits réservés.</p>
+        <div class="footer-bottom-links">
+          <a routerLink="/privacy">Confidentialité</a>
+          <a routerLink="/terms">Conditions</a>
+          <a routerLink="/cookies">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
