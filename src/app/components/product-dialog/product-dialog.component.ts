@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FibreProduct } from '../../models/fibre-product';
+import { ApiServiceService } from '../../services/api-service.service';
 
 export interface ProductDialogData {
   product?: FibreProduct;
@@ -20,7 +21,8 @@ export class ProductDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ProductDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProductDialogData
+    @Inject(MAT_DIALOG_DATA) public data: ProductDialogData,
+    private api: ApiServiceService
   ) {
     this.productForm = this.createProductForm();
     this.isEditing = data.isEditing;
@@ -73,28 +75,39 @@ export class ProductDialogComponent implements OnInit {
   }
 
   onSave() {
-    if (this.productForm.valid) {
-      const formValue = this.productForm.value;
-      const productData: FibreProduct = {
-        id: this.isEditing ? this.data.product!.id : 0, // Will be set by parent component
-        name: formValue.name,
-        description: formValue.description,
-        price: formValue.price,
-        category: formValue.category,
-        image: formValue.image,
-        features: formValue.features.split(',').map((f: string) => f.trim()).filter((f: string) => f),
-        specifications: {
-          speed: formValue.specifications.speed,
-          distance: formValue.specifications.distance,
-          wavelength: formValue.specifications.wavelength,
-          connector: formValue.specifications.connector
-        },
-        inStock: formValue.inStock,
-        rating: formValue.rating,
-        reviews: formValue.reviews
-      };
+    if (!this.productForm.valid) return;
 
-      this.dialogRef.close(productData);
+    const formValue = this.productForm.value;
+    const payload: FibreProduct = {
+      id: this.isEditing && this.data.product ? this.data.product.id : 0,
+      name: formValue.name,
+      description: formValue.description,
+      price: formValue.price,
+      category: formValue.category,
+      image: formValue.image,
+      features: String(formValue.features || '')
+        .split(',')
+        .map((f: string) => f.trim())
+        .filter((f: string) => f.length > 0),
+      specifications: {
+        speed: formValue.specifications.speed,
+        distance: formValue.specifications.distance,
+        wavelength: formValue.specifications.wavelength,
+        connector: formValue.specifications.connector
+      },
+      inStock: formValue.inStock,
+      rating: formValue.rating,
+      reviews: formValue.reviews
+    };
+
+    if (this.isEditing && this.data.product) {
+      this.api.updateProduct(this.data.product.id, payload).subscribe(saved => {
+        this.dialogRef.close(saved);
+      });
+    } else {
+      this.api.createProduct(payload).subscribe(saved => {
+        this.dialogRef.close(saved);
+      });
     }
   }
 

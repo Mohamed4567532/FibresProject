@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDialogComponent, ProductDialogData } from '../../components/product-dialog/product-dialog.component';
-import { FibreServiceService } from '../../services/fibre-service.service';
+import { ApiServiceService } from '../../services/api-service.service';
 import { CartServiceService } from '../../services/cart-service.service';
 import { FibreProduct } from '../../models/fibre-product';
 import { Subscription } from 'rxjs';
@@ -28,7 +28,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   private cartSubscription: Subscription = new Subscription();
 
   constructor(
-    private fibreService: FibreServiceService,
+    private api: ApiServiceService,
     private cartService: CartServiceService,
     private dialog: MatDialog
   ) {}
@@ -43,10 +43,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   loadProducts() {
-    this.fibreService.getProducts().subscribe(products => {
+    this.api.getProducts().subscribe(products => {
       this.products = products;
       this.filteredProducts = [...products];
       this.extractCategories();
+      this.filterProducts();
     });
   }
 
@@ -158,13 +159,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Generate a new id based on current list
-        const nextId = this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
-        result.id = nextId;
-        this.products.push(result);
-        this.filteredProducts = [...this.products];
-        this.extractCategories();
-        this.filterProducts();
+        this.loadProducts();
       }
     });
   }
