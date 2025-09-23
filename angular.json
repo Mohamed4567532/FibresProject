@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "FibreProject": {
+    "fibre_db": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "FibreProject:build:production"
+              "browserTarget": "fibre_db:build:production"
             },
             "development": {
-              "browserTarget": "FibreProject:build:development"
+              "browserTarget": "fibre_db:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +73,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "FibreProject:build"
+            "browserTarget": "fibre_db:build"
           }
         },
         "test": {

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import productsRouter from './routes/products.js';
+import { initializeDatabase } from './db/init.js';
 
 dotenv.config();
 
@@ -16,10 +17,28 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/products', productsRouter);
 
-const port = Number(process.env.PORT || 4000);
-app.listen(port, () => {
+// Basic error handler to log server errors in console and return JSON
+// Keep this after routes so it catches thrown errors
+// eslint-disable-next-line no-unused-vars
+app.use((err, _req, res, _next) => {
   // eslint-disable-next-line no-console
-  console.log(`API listening on http://localhost:${port}`);
+  console.error('Unhandled error:', err);
+  res.status(500).json({ error: 'Internal Server Error', details: err?.message || 'Unknown error' });
 });
+
+const port = Number(process.env.PORT || 3000);
+
+initializeDatabase()
+  .then(() => {
+    app.listen(port, () => {
+      // eslint-disable-next-line no-console
+      console.log(`API listening on http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    // eslint-disable-next-line no-console
+    console.error('Failed to initialize database:', err);
+    process.exit(1);
+  });
 
 

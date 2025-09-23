@@ -43,7 +43,7 @@ Une application web moderne développée avec Angular 16 pour une entreprise sp�
 1. **Cloner le projet**
 ```bash
 git clone <repository-url>
-cd FibreProject
+cd fibre_db
 ```
 
 2. **Installer les dépendances**
