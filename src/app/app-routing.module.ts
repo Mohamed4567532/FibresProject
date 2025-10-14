@@ -10,6 +10,8 @@ import { FaqComponent } from './pages/faq/faq.component';
 import { TeamComponent } from './pages/team/team.component';
 import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -22,7 +24,12 @@ const routes: Routes = [
   { path: 'faq', component: FaqComponent },
   { path: 'team', component: TeamComponent },
   { path: 'testimonials', component: TestimonialsComponent },
-  { path: 'admin', component: AdminComponent },
+  { path: 'login', component: LoginComponent },
+  { 
+    path: 'admin', 
+    component: AdminComponent,
+    canActivate: [AuthGuard]
+  },
   { path: '**', redirectTo: '/home' }
 ];
 

@@ -22,8 +22,25 @@
           <mat-icon>shopping_cart</mat-icon>
           <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
         </button>
+        
+        <!-- Admin Link (visible only for authenticated admin users) -->
+        <button mat-button class="btn-admin" routerLink="/admin" *ngIf="isAuthenticated && currentUser?.role === 'admin'">
+          <mat-icon>admin_panel_settings</mat-icon>
+          Admin
+        </button>
+        
+        <!-- Authentication Buttons -->
+     
+        
+        <div class="auth-buttons" *ngIf="isAuthenticated">
+          <span class="user-welcome">Bonjour, {{ currentUser?.username }}</span>
+          <button mat-button class="btn-logout" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Déconnexion
+          </button>
+        </div>
+        
         <button mat-button class="btn-secondary" routerLink="/pricing">Tarifs</button>
-        <button mat-button class="btn-secondary" routerLink="/admin">Admin</button>
         <button mat-raised-button class="btn-primary" routerLink="/contact">Devis Gratuit</button>
       </div>
 
@@ -41,6 +58,29 @@
     <a routerLink="/services" (click)="closeMobileMenu()" routerLinkActive="active">Services</a>
     <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">Produits</a>
     <a routerLink="/contact" (click)="closeMobileMenu()" routerLinkActive="active">Contact</a>
-    <a routerLink="/pricing" (click)="closeMobileMenu()" routerLinkActive="active">Tarifs</a>
+   
+    
+    <!-- Admin Link (mobile) -->
+    <a routerLink="/admin" (click)="closeMobileMenu()" routerLinkActive="active" *ngIf="isAuthenticated && currentUser?.role === 'admin'">
+      <mat-icon>admin_panel_settings</mat-icon>
+      Administration
+    </a>
+    
+    <!-- Authentication Links (mobile) -->
+    <a routerLink="/login" (click)="closeMobileMenu()" *ngIf="!isAuthenticated">
+      <mat-icon>login</mat-icon>
+      Connexion
+    </a>
+    
+    <div class="mobile-user-info" *ngIf="isAuthenticated">
+      <span class="mobile-user-welcome">
+        <mat-icon>person</mat-icon>
+        {{ currentUser?.username }}
+      </span>
+      <button mat-button class="mobile-logout-btn" (click)="logout(); closeMobileMenu()">
+        <mat-icon>logout</mat-icon>
+        Déconnexion
+      </button>
+    </div>
   </div>
 </mat-toolbar>

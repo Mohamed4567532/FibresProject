@@ -47,6 +47,7 @@ import { TestimonialsComponent } from './pages/testimonials/testimonials.compone
 import { AdminComponent } from './pages/admin/admin.component';
 import { ProductDialogComponent } from './components/product-dialog/product-dialog.component';
 import { CartServiceService } from './services/cart-service.service';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { CartServiceService } from './services/cart-service.service';
     TeamComponent,
     TestimonialsComponent,
     AdminComponent,
-    ProductDialogComponent
+    ProductDialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

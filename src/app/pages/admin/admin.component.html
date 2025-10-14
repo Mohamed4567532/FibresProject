@@ -2,8 +2,20 @@
 <section class="admin-header">
   <div class="container">
     <div class="admin-header-content">
-      <h1>Administration des Produits</h1>
-      <p>Gérez votre catalogue de produits fibre optique</p>
+      <div class="admin-title">
+        <h1>Administration des Produits</h1>
+        <p>Gérez votre catalogue de produits fibre optique</p>
+      </div>
+      <div class="admin-user-info">
+        <div class="user-details">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Connecté en tant que: {{ currentUser?.username }}</span>
+        </div>
+        <button mat-button class="logout-btn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Déconnexion
+        </button>
+      </div>
     </div>
   </div>
 </section>

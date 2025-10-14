@@ -15,4 +15,15 @@ export async function getPool() {
   return pool;
 }
 
+// Fonction helper pour exécuter des requêtes
+export async function query(sql, params = []) {
+  const connection = await pool.getConnection();
+  try {
+    const [results] = await connection.execute(sql, params);
+    return [results];
+  } finally {
+    connection.release();
+  }
+}
+
 

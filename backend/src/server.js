@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import productsRouter from './routes/products.js';
+import authRouter from './routes/auth.js';
 import { initializeDatabase } from './db/init.js';
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/products', productsRouter);
+app.use('/api/auth', authRouter);
 
 // Basic error handler to log server errors in console and return JSON
 // Keep this after routes so it catches thrown errors

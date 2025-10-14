@@ -1,30 +1,68 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FibreServiceService } from '../../services/fibre-service.service';
 import { FibreProduct } from '../../models/fibre-product';
 import { ProductDialogComponent, ProductDialogData } from '../../components/product-dialog/product-dialog.component';
+import { AuthService, User } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
   products: FibreProduct[] = [];
   filteredProducts: FibreProduct[] = [];
   searchTerm: string = '';
+  currentUser: User | null = null;
   
   displayedColumns: string[] = ['image', 'name', 'price', 'stock', 'rating', 'actions'];
+  
+  private authSubscription: Subscription = new Subscription();
 
   constructor(
     private fibreService: FibreServiceService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.loadProducts();
+    this.loadCurrentUser();
+  }
+
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+  }
+
+  loadCurrentUser() {
+    this.authSubscription = this.authService.authState$.subscribe(authState => {
+      this.currentUser = authState.user;
+    });
+  }
+
+  logout() {
+    // Confirmation avant déconnexion
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ? Vous perdrez l\'accès à l\'interface d\'administration.')) {
+      this.authService.logout().subscribe({
+        next: (response) => {
+          this.snackBar.open(response.message, 'Fermer', { 
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+        },
+        error: (error) => {
+          console.error('Logout error:', error);
+          this.snackBar.open('Erreur lors de la déconnexion', 'Fermer', { 
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
+    }
   }
 
 
