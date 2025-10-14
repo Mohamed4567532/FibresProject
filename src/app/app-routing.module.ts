@@ -5,7 +5,6 @@ import { AboutComponent } from './pages/about/about.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { ContactComponent } from './pages/contact/contact.component';
-import { PricingComponent } from './pages/pricing/pricing.component';
 import { FaqComponent } from './pages/faq/faq.component';
 import { TeamComponent } from './pages/team/team.component';
 import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
@@ -20,7 +19,6 @@ const routes: Routes = [
   { path: 'services', component: ServicesComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'pricing', component: PricingComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'team', component: TeamComponent },
   { path: 'testimonials', component: TestimonialsComponent },

@@ -56,10 +56,16 @@
           <mat-icon>list</mat-icon>
         </button>
       </div>
-      <button mat-raised-button class="btn-primary" (click)="openAddProductDialog()">
+      <button mat-raised-button class="btn-primary" (click)="openAddProductDialog()" *ngIf="isAdmin">
         <mat-icon>add</mat-icon>
         Ajouter un produit
       </button>
+      
+      <!-- Message informatif pour les non-administrateurs -->
+      <div class="admin-info" *ngIf="isAuthenticated && !isAdmin">
+        <mat-icon>info</mat-icon>
+        <span>Seuls les administrateurs peuvent ajouter des produits</span>
+      </div>
     </div>
     
     <div class="products-grid" [class.list-view]="viewMode === 'list'">

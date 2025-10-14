@@ -40,7 +40,6 @@ import { AboutComponent } from './pages/about/about.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { ContactComponent } from './pages/contact/contact.component';
-import { PricingComponent } from './pages/pricing/pricing.component';
 import { FaqComponent } from './pages/faq/faq.component';
 import { TeamComponent } from './pages/team/team.component';
 import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
@@ -59,7 +58,6 @@ import { LoginComponent } from './pages/login/login.component';
     ServicesComponent,
     ProductsComponent,
     ContactComponent,
-    PricingComponent,
     FaqComponent,
     TeamComponent,
     TestimonialsComponent,

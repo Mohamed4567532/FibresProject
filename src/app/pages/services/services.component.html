@@ -28,7 +28,7 @@
         </ul>
         <div class="service-footer">
           <div class="service-price" *ngIf="service.price">
-            <span class="price">{{ service.price }}€</span>
+            <span class="price">{{ service.price }} dt</span>
             <span class="duration">{{ service.duration }}</span>
           </div>
           <button mat-raised-button class="btn-primary" (click)="requestQuote(service)">

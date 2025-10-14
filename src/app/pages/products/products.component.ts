@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductDialogComponent, ProductDialogData } from '../../components/product-dialog/product-dialog.component';
 import { ApiServiceService } from '../../services/api-service.service';
 import { CartServiceService } from '../../services/cart-service.service';
+import { AuthService, User } from '../../services/auth.service';
 import { FibreProduct } from '../../models/fibre-product';
 import { Subscription } from 'rxjs';
 
@@ -27,19 +28,28 @@ export class ProductsComponent implements OnInit, OnDestroy {
   cartTotal: number = 0;
   private cartSubscription: Subscription = new Subscription();
 
+  // Authentification
+  currentUser: User | null = null;
+  isAuthenticated = false;
+  isAdmin = false;
+  private authSubscription: Subscription = new Subscription();
+
   constructor(
     private api: ApiServiceService,
     private cartService: CartServiceService,
+    private authService: AuthService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.loadProducts();
     this.subscribeToCart();
+    this.subscribeToAuth();
   }
 
   ngOnDestroy() {
     this.cartSubscription.unsubscribe();
+    this.authSubscription.unsubscribe();
   }
 
   loadProducts() {
@@ -60,6 +70,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
       this.cartService.getCartItems().subscribe(items => {
         this.cartItemCount = this.cartService.getItemCount();
         this.cartTotal = this.cartService.getCartTotal();
+      })
+    );
+  }
+
+  subscribeToAuth() {
+    this.authSubscription.add(
+      this.authService.authState$.subscribe(authState => {
+        this.isAuthenticated = authState.isAuthenticated;
+        this.currentUser = authState.user;
+        this.isAdmin = authState.user?.role === 'admin';
       })
     );
   }
@@ -148,6 +168,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   openAddProductDialog() {
+    // Vérifier que l'utilisateur est administrateur
+    if (!this.isAdmin) {
+      console.warn('Accès refusé: Seuls les administrateurs peuvent ajouter des produits');
+      return;
+    }
+
     const dialogData: ProductDialogData = { isEditing: false };
     const dialogRef = this.dialog.open(ProductDialogComponent, {
       width: '800px',
