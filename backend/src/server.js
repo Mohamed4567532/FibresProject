@@ -1,8 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import productsRouter from './routes/products.js';
+import servicesRouter from './routes/services.js';
 import authRouter from './routes/auth.js';
+import uploadRouter from './routes/upload.js';
 import { initializeDatabase } from './db/init.js';
 
 dotenv.config();
@@ -12,12 +16,19 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
+// Servir les fichiers statiques (images uploadées)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
 app.use('/api/products', productsRouter);
+app.use('/api/services', servicesRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/upload', uploadRouter);
 
 // Basic error handler to log server errors in console and return JSON
 // Keep this after routes so it catches thrown errors

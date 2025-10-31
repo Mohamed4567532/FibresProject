@@ -292,6 +292,42 @@ export class ApiServiceService {
     return this.http.post(`${this.apiUrl}/upload`, formData, { headers: this.getHeaders() });
   }
 
+  // Méthode spécifique pour l'upload d'images de produits
+  uploadImage(file: File): Observable<{success: boolean, path: string, url: string, filename: string}> {
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    // Pour les uploads, ne pas mettre Content-Type pour laisser le browser le définir
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+    });
+    
+    return this.http.post<{success: boolean, path: string, url: string, filename: string}>(
+      `${this.apiUrl}/upload/image`,
+      formData,
+      { headers }
+    );
+  }
+
+  // Méthode helper pour obtenir l'URL complète d'une image
+  getImageUrl(imagePath: string): string {
+    if (!imagePath) return '';
+    
+    // Si c'est déjà une URL complète (http:// ou https://), la retourner telle quelle
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    
+    // Si c'est un chemin relatif commençant par /api/uploads, construire l'URL complète
+    if (imagePath.startsWith('/api/uploads')) {
+      const baseUrl = this.apiUrl.replace('/api', '');
+      return `${baseUrl}${imagePath}`;
+    }
+    
+    // Sinon, c'est probablement un chemin assets (pour les anciennes images)
+    return imagePath;
+  }
+
   deleteFile(filename: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/upload/${filename}`, { headers: this.getHeaders() });
   }

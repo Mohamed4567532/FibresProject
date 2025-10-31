@@ -45,11 +45,36 @@
         <mat-label>Nombre d'avis</mat-label>
         <input matInput type="number" formControlName="reviews" placeholder="0">
       </mat-form-field>
-      
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Image URL</mat-label>
-        <input matInput formControlName="image" placeholder="assets/images/products/...">
-      </mat-form-field>
+    </div>
+
+    <!-- Section Upload Image -->
+    <div class="form-row image-upload-section">
+      <div class="image-upload-container">
+        <label class="image-upload-label">
+          <input 
+            type="file" 
+            accept="image/*" 
+            (change)="onFileSelected($event)"
+            style="display: none;"
+            #fileInput>
+          <button mat-raised-button type="button" (click)="fileInput.click()" [disabled]="isUploading">
+            <mat-icon>cloud_upload</mat-icon>
+            {{ selectedFile ? 'Changer l\'image' : 'Sélectionner une image' }}
+          </button>
+        </label>
+        
+        <div class="image-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Aperçu">
+          <button mat-icon-button class="remove-image-btn" (click)="removeImage()" *ngIf="selectedFile" type="button">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        
+        <div class="upload-info" *ngIf="selectedFile">
+          <p>{{ selectedFile.name }}</p>
+          <p class="file-size">Taille: {{ (selectedFile.size / 1024).toFixed(2) }} KB</p>
+        </div>
+      </div>
     </div>
     
     <mat-form-field appearance="outline" class="form-field full-width">
@@ -95,8 +120,9 @@
 </div>
 
 <div mat-dialog-actions class="dialog-actions">
-  <button mat-button (click)="onCancel()">Annuler</button>
-  <button mat-raised-button class="btn-primary" (click)="onSave()" [disabled]="productForm.invalid">
-    {{ isEditing ? 'Modifier' : 'Ajouter' }}
+  <button mat-button (click)="onCancel()" [disabled]="isUploading">Annuler</button>
+  <button mat-raised-button class="btn-primary" (click)="onSave()" [disabled]="productForm.invalid || isUploading">
+    <mat-icon *ngIf="isUploading">hourglass_empty</mat-icon>
+    {{ isUploading ? 'Enregistrement...' : (isEditing ? 'Modifier' : 'Ajouter') }}
   </button>
 </div>

@@ -1,0 +1,20 @@
+.service-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-field.full-width {
+  width: 100%;
+}
+

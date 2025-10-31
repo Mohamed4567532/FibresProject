@@ -41,6 +41,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {}
 
+  // Méthode helper pour obtenir l'URL complète d'une image
+  getImageUrl(imagePath: string): string {
+    return this.api.getImageUrl(imagePath);
+  }
+
   ngOnInit() {
     this.loadProducts();
     this.subscribeToCart();

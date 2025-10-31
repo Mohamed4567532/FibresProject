@@ -8,7 +8,7 @@
       </div>
 
       <!-- Navigation Desktop -->
-      <nav class="nav-desktop">
+      <nav class="nav-desktop" *ngIf="!isAdmin">
         <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
         <a routerLink="/about" routerLinkActive="active">À Propos</a>
         <a routerLink="/services" routerLinkActive="active">Services</a>
@@ -16,22 +16,19 @@
         <a routerLink="/contact" routerLinkActive="active">Contact</a>
       </nav>
 
+      <!-- Navigation Admin (simplifiée) -->
+      <nav class="nav-desktop" *ngIf="isAdmin">
+        <a routerLink="/admin" routerLinkActive="active">Administration</a>
+      </nav>
+
       <!-- CTA Buttons -->
-      <div class="header-actions">
+      <div class="header-actions" *ngIf="!isAdmin">
         <button mat-icon-button class="cart-btn" routerLink="/products">
           <mat-icon>shopping_cart</mat-icon>
           <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
         </button>
         
-        <!-- Admin Link (visible only for authenticated admin users) -->
-        <button mat-button class="btn-admin" routerLink="/admin" *ngIf="isAuthenticated && currentUser?.role === 'admin'">
-          <mat-icon>admin_panel_settings</mat-icon>
-          Admin
-        </button>
-        
         <!-- Authentication Buttons -->
-     
-        
         <div class="auth-buttons" *ngIf="isAuthenticated">
           <span class="user-welcome">Bonjour, {{ currentUser?.username }}</span>
           <button mat-button class="btn-logout" (click)="logout()">
@@ -43,6 +40,17 @@
         <button mat-raised-button class="btn-primary" routerLink="/contact">Devis Gratuit</button>
       </div>
 
+      <!-- Header Actions for Admin -->
+      <div class="header-actions" *ngIf="isAdmin">
+        <div class="auth-buttons">
+          <span class="user-welcome">Admin: {{ currentUser?.username }}</span>
+          <button mat-button class="btn-logout" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Déconnexion
+          </button>
+        </div>
+      </div>
+
       <!-- Mobile Menu Button -->
       <button mat-icon-button class="mobile-menu-btn" (click)="toggleMobileMenu()">
         <mat-icon>menu</mat-icon>
@@ -52,29 +60,34 @@
 
   <!-- Mobile Navigation -->
   <div class="mobile-nav" [class.open]="mobileMenuOpen">
-    <a routerLink="/home" (click)="closeMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
-    <a routerLink="/about" (click)="closeMobileMenu()" routerLinkActive="active">À Propos</a>
-    <a routerLink="/services" (click)="closeMobileMenu()" routerLinkActive="active">Services</a>
-    <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">Produits</a>
-    <a routerLink="/contact" (click)="closeMobileMenu()" routerLinkActive="active">Contact</a>
-   
+    <!-- Navigation normale (non-admin) -->
+    <ng-container *ngIf="!isAdmin">
+      <a routerLink="/home" (click)="closeMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+      <a routerLink="/about" (click)="closeMobileMenu()" routerLinkActive="active">À Propos</a>
+      <a routerLink="/services" (click)="closeMobileMenu()" routerLinkActive="active">Services</a>
+      <a routerLink="/products" (click)="closeMobileMenu()" routerLinkActive="active">Produits</a>
+      <a routerLink="/contact" (click)="closeMobileMenu()" routerLinkActive="active">Contact</a>
+      
+      <!-- Authentication Links (mobile) -->
+      <a routerLink="/login" (click)="closeMobileMenu()" *ngIf="!isAuthenticated">
+        <mat-icon>login</mat-icon>
+        Connexion
+      </a>
+    </ng-container>
+
+    <!-- Navigation admin (simplifiée) -->
+    <ng-container *ngIf="isAdmin">
+      <a routerLink="/admin" (click)="closeMobileMenu()" routerLinkActive="active">
+        <mat-icon>admin_panel_settings</mat-icon>
+        Administration
+      </a>
+    </ng-container>
     
-    <!-- Admin Link (mobile) -->
-    <a routerLink="/admin" (click)="closeMobileMenu()" routerLinkActive="active" *ngIf="isAuthenticated && currentUser?.role === 'admin'">
-      <mat-icon>admin_panel_settings</mat-icon>
-      Administration
-    </a>
-    
-    <!-- Authentication Links (mobile) -->
-    <a routerLink="/login" (click)="closeMobileMenu()" *ngIf="!isAuthenticated">
-      <mat-icon>login</mat-icon>
-      Connexion
-    </a>
-    
+    <!-- User Info -->
     <div class="mobile-user-info" *ngIf="isAuthenticated">
       <span class="mobile-user-welcome">
         <mat-icon>person</mat-icon>
-        {{ currentUser?.username }}
+        {{ isAdmin ? 'Admin: ' : '' }}{{ currentUser?.username }}
       </span>
       <button mat-button class="mobile-logout-btn" (click)="logout(); closeMobileMenu()">
         <mat-icon>logout</mat-icon>

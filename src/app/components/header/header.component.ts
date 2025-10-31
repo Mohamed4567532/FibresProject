@@ -49,6 +49,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isAdmin(): boolean {
+    return this.currentUser?.role === 'admin';
+  }
+
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }

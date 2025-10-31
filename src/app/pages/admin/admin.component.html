@@ -3,8 +3,8 @@
   <div class="container">
     <div class="admin-header-content">
       <div class="admin-title">
-        <h1>Administration des Produits</h1>
-        <p>Gérez votre catalogue de produits fibre optique</p>
+        <h1>Administration</h1>
+        <p>Gérez vos produits et services fibre optique</p>
       </div>
       <div class="admin-user-info">
         <div class="user-details">
@@ -20,33 +20,38 @@
   </div>
 </section>
 
-<!-- Admin Controls -->
-<section class="admin-controls">
+<!-- Admin Tabs -->
+<section class="admin-tabs">
   <div class="container">
-    <div class="admin-controls-content">
-      <div class="search-section">
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-label>Rechercher un produit</mat-label>
-          <input matInput [(ngModel)]="searchTerm" (input)="filterProducts()" placeholder="Nom, description, catégorie...">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
-      
-      <div class="actions-section">
-        <button mat-raised-button class="btn-primary" (click)="openAddProductDialog()">
-          <mat-icon>add</mat-icon>
-          Ajouter un produit
-        </button>
-        <button mat-button class="btn-secondary" (click)="refreshProducts()">
-          <mat-icon>refresh</mat-icon>
-          Actualiser
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedIndexChange)="onTabChange($event)">
+      <mat-tab label="Produits">
+        <!-- Products Controls -->
+        <section class="admin-controls">
+          <div class="container">
+            <div class="admin-controls-content">
+              <div class="search-section">
+                <mat-form-field appearance="outline" class="search-field">
+                  <mat-label>Rechercher un produit</mat-label>
+                  <input matInput [(ngModel)]="searchTerm" (input)="filterProducts()" placeholder="Nom, description, catégorie...">
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+              </div>
+              
+              <div class="actions-section">
+                <button mat-raised-button class="btn-primary" (click)="openAddProductDialog()">
+                  <mat-icon>add</mat-icon>
+                  Ajouter un produit
+                </button>
+                <button mat-button class="btn-secondary" (click)="refreshProducts()">
+                  <mat-icon>refresh</mat-icon>
+                  Actualiser
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
 
-<!-- Products Table -->
+        <!-- Products Table -->
 <section class="admin-table-section">
   <div class="container">
     <div class="table-container">
@@ -55,7 +60,7 @@
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Image</th>
           <td mat-cell *matCellDef="let product">
-            <img [src]="product.image" [alt]="product.name" class="product-thumbnail">
+            <img [src]="getImageUrl(product.image)" [alt]="product.name" class="product-thumbnail">
           </td>
         </ng-container>
 
@@ -118,6 +123,109 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
+  </div>
+</section>
+      </mat-tab>
+
+      <mat-tab label="Services">
+        <!-- Services Controls -->
+        <section class="admin-controls">
+          <div class="container">
+            <div class="admin-controls-content">
+              <div class="search-section">
+                <mat-form-field appearance="outline" class="search-field">
+                  <mat-label>Rechercher un service</mat-label>
+                  <input matInput [(ngModel)]="serviceSearchTerm" (input)="filterServices()" placeholder="Titre, description, catégorie...">
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+              </div>
+              
+              <div class="actions-section">
+                <button mat-raised-button class="btn-primary" (click)="openAddServiceDialog()">
+                  <mat-icon>add</mat-icon>
+                  Ajouter un service
+                </button>
+                <button mat-button class="btn-secondary" (click)="refreshServices()">
+                  <mat-icon>refresh</mat-icon>
+                  Actualiser
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Services Table -->
+        <section class="admin-table-section">
+          <div class="container">
+            <div class="table-container">
+              <table mat-table [dataSource]="filteredServices" class="services-table">
+                <!-- Icon Column -->
+                <ng-container matColumnDef="icon">
+                  <th mat-header-cell *matHeaderCellDef>Icône</th>
+                  <td mat-cell *matCellDef="let service">
+                    <mat-icon>{{ service.icon }}</mat-icon>
+                  </td>
+                </ng-container>
+
+                <!-- Title Column -->
+                <ng-container matColumnDef="title">
+                  <th mat-header-cell *matHeaderCellDef>Titre</th>
+                  <td mat-cell *matCellDef="let service">
+                    <div class="service-name">
+                      <strong>{{ service.title }}</strong>
+                      <span class="service-category">{{ service.category }}</span>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let service">
+                    <span class="service-description">{{ service.description }}</span>
+                  </td>
+                </ng-container>
+
+                <!-- Price Column -->
+                <ng-container matColumnDef="price">
+                  <th mat-header-cell *matHeaderCellDef>Prix</th>
+                  <td mat-cell *matCellDef="let service">
+                    <span class="service-price" *ngIf="service.price">{{ service.price }} DT</span>
+                    <span class="service-price" *ngIf="!service.price">Sur devis</span>
+                  </td>
+                </ng-container>
+
+                <!-- Duration Column -->
+                <ng-container matColumnDef="duration">
+                  <th mat-header-cell *matHeaderCellDef>Durée</th>
+                  <td mat-cell *matCellDef="let service">
+                    <span class="service-duration">{{ service.duration || 'N/A' }}</span>
+                  </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let service">
+                    <div class="action-buttons">
+                      <button mat-icon-button (click)="editService(service)" class="edit-btn">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button (click)="deleteService(service)" class="delete-btn">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="serviceDisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: serviceDisplayedColumns;"></tr>
+              </table>
+            </div>
+          </div>
+        </section>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </section>
 

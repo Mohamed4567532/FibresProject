@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FibreServiceService } from '../../services/fibre-service.service';
+import { ApiServiceService } from '../../services/api-service.service';
 import { Service } from '../../models/service';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ export class ServicesComponent implements OnInit {
   services: Service[] = [];
 
   constructor(
-    private fibreService: FibreServiceService,
+    private api: ApiServiceService,
     private router: Router
   ) {}
 
@@ -21,8 +21,13 @@ export class ServicesComponent implements OnInit {
   }
 
   loadServices() {
-    this.fibreService.getServices().subscribe(services => {
-      this.services = services;
+    this.api.getServices().subscribe({
+      next: (services) => {
+        this.services = services;
+      },
+      error: (error) => {
+        console.error('Error loading services:', error);
+      }
     });
   }
 

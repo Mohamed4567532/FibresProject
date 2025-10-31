@@ -53,6 +53,23 @@ export async function initializeDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
+    // Créer la table des services
+    await dbConn.query(`
+      CREATE TABLE IF NOT EXISTS \`services\` (
+        \`id\` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        \`title\` VARCHAR(255) NOT NULL,
+        \`description\` TEXT NULL,
+        \`icon\` VARCHAR(100) NOT NULL DEFAULT 'fiber_optics',
+        \`features\` JSON NULL,
+        \`price\` DECIMAL(10,2) NULL,
+        \`duration\` VARCHAR(100) NULL,
+        \`category\` VARCHAR(100) NOT NULL,
+        \`created_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        \`updated_at\` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (\`id\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
     // Créer un utilisateur administrateur par défaut si il n'existe pas
     const [existingAdmin] = await dbConn.query('SELECT id FROM users WHERE username = ?', ['admin']);
     if (existingAdmin.length === 0) {

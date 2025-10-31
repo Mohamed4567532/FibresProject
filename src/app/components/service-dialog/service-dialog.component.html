@@ -1,0 +1,65 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>{{ isEditing ? 'Modifier le service' : 'Ajouter un service' }}</h2>
+</div>
+
+<div mat-dialog-content>
+  <form [formGroup]="serviceForm" class="service-form">
+    <mat-form-field appearance="outline" class="form-field full-width">
+      <mat-label>Titre</mat-label>
+      <input matInput formControlName="title" placeholder="Ex: Installation Fibre Optique">
+      <mat-error *ngIf="serviceForm.get('title')?.hasError('required')">
+        Le titre est requis
+      </mat-error>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline" class="form-field full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+      <mat-error *ngIf="serviceForm.get('description')?.hasError('required')">
+        La description est requise
+      </mat-error>
+    </mat-form-field>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Icône</mat-label>
+        <input matInput formControlName="icon" placeholder="fiber_optics">
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Catégorie</mat-label>
+        <mat-select formControlName="category">
+          <mat-option value="Installation">Installation</mat-option>
+          <mat-option value="Maintenance">Maintenance</mat-option>
+          <mat-option value="Audit">Audit</mat-option>
+          <mat-option value="Conseil">Conseil</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Prix (DT)</mat-label>
+        <input matInput type="number" formControlName="price" placeholder="Optionnel">
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Durée</mat-label>
+        <input matInput formControlName="duration" placeholder="Ex: 1-3 jours">
+      </mat-form-field>
+    </div>
+    
+    <mat-form-field appearance="outline" class="form-field full-width">
+      <mat-label>Fonctionnalités (séparées par des virgules)</mat-label>
+      <input matInput formControlName="features" placeholder="Ex: Installation complète, Test de performance">
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button class="btn-primary" (click)="onSave()" [disabled]="serviceForm.invalid">
+    {{ isEditing ? 'Modifier' : 'Ajouter' }}
+  </button>
+</div>
+

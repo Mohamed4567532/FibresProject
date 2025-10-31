@@ -45,6 +45,7 @@ import { TeamComponent } from './pages/team/team.component';
 import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ProductDialogComponent } from './components/product-dialog/product-dialog.component';
+import { ServiceDialogComponent } from './components/service-dialog/service-dialog.component';
 import { CartServiceService } from './services/cart-service.service';
 import { LoginComponent } from './pages/login/login.component';
 
@@ -63,6 +64,7 @@ import { LoginComponent } from './pages/login/login.component';
     TestimonialsComponent,
     AdminComponent,
     ProductDialogComponent,
+    ServiceDialogComponent,
     LoginComponent
   ],
   imports: [
